@@ -1,6 +1,6 @@
 import React,{useState,useEffect} from 'react';
 
-function DevForm({onSubmit}){
+function DevForm({ onSubmit }) {
   const [github_username,setGithubUsername] = useState('');
   const [techs,setTechs] = useState('');
   const [latitude,setLatitude] = useState('');
