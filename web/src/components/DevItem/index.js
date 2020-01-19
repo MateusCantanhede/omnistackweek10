@@ -1,6 +1,6 @@
 import React from 'react'
 import './style.css';
-function devItem({ dev }){
+function DevItem({ dev }){
     return (
         <li className="dev-item">
             <header>
@@ -15,4 +15,4 @@ function devItem({ dev }){
           </li>
     );
 }
-export default devItem;
+export default DevItem;

@@ -1,12 +1,13 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect} from 'react';
 import api from './services/api';
 import './global.css';
 import './App.css';
 import './Sidebar.css';
 import './Main.css';
-import DevItem from './components/DevItem';
 import DevForm from './components/DevForm';
+import DevItem from './components/DevItem';
+
+
 //componente
 //propriedades
 //estado
@@ -23,8 +24,8 @@ function App() {
   },[]);
 
   async function handleAddDev(data){
-    const response = await api.post('devs/',data)
-    
+    const response = await api.post('/devs', data);
+    console.log(response.data);
     setDevs([...devs,response.data]);
   }
   return (
@@ -36,7 +37,10 @@ function App() {
       <main>
         <ul>
           {devs.map(dev=>(
-            <DevItem key = {dev._id} dev = {dev}/>
+            <DevItem 
+              key = {dev._id} 
+              dev = {dev}
+            />
           ))}
         </ul>
       </main>
