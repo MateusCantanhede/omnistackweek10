@@ -3,11 +3,15 @@ import {StyleSheet, Image, View,Text,TextInput,TouchableOpacity} from 'react-nat
 import MapView,{Marker, Callout} from 'react-native-maps';
 import {requestPermissionsAsync, getCurrentPositionAsync} from 'expo-location';
 import {MaterialIcons} from '@expo/vector-icons';
+
 import api from '../services/api';
+import {connect,disconnect,subscribeToNewDevs} from '../services/socket';
 
 function Main({navigation}){
     const [devs, setDevs] = useState([]);
     const [currentRegion,setCurrentRegion] = useState(null);
+    const [techs,setTechs] = useState('');
+
     useEffect(()=>{
         async function loadInitialPosition(){
            const {granted} = await requestPermissionsAsync();
@@ -28,17 +32,29 @@ function Main({navigation}){
         }
         loadInitialPosition();
     },[]);
-
+    useEffect(()=>{
+        subscribeToNewDevs(dev=>setDevs([...devs,dev]));
+    },[devs]);
+    function setupWebsocket(){
+        disconnect();
+        const {latitude, longitude} = currentRegion;
+        connect(
+            latitude,
+            longitude,
+            techs,
+        );
+    }
     async function loadDevs(){
         const {latitude,longitude} = currentRegion;
         const response = await api.get('/search',{
             params:{
                 latitude,
                 longitude,
-                techs: 'ReactJS'
+                techs,
             }
         });
         setDevs(response.data.devs);
+        setupWebsocket();
     }
     function handleRegionChanged(region){
         console.log(region);
@@ -86,6 +102,8 @@ function Main({navigation}){
                     placeholderTextColor = "#999"
                     autoCapitalize = "words"
                     autoCorrect = {false}
+                    value = {techs}
+                    onChangeText= {setTechs}
                 />
                 <TouchableOpacity  onPress={loadDevs} style = {styles.loadButton}>
                     <MaterialIcons name="my-location" size={20} color="#fff"/>
