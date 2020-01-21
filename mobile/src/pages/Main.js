@@ -57,7 +57,6 @@ function Main({navigation}){
         setupWebsocket();
     }
     function handleRegionChanged(region){
-        console.log(region);
         setCurrentRegion(region);
     }
     if(!currentRegion){
@@ -131,7 +130,7 @@ const styles = StyleSheet.create({
         fontSize: 16,
     },
     devBio:{
-        color: '#fff',
+        color: '#000',
         marginTop: 5,
     },
     devTechs:{
